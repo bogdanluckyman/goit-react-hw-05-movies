@@ -1,16 +1,8 @@
-import { useEffect } from 'react';
-import { fetchMovies } from './Api';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import { MovieDetails } from './pages/MovieDetails';
+import { HomePage } from './pages/Home';
 
 export const App = () => {
-  useEffect(() => {
-    const fetchTopMovies = async () => {
-      const topMovies = await fetchMovies();
-      console.log(topMovies.results[0]);
-    };
-    fetchTopMovies();
-  }, []);
   return (
     <div>
       <nav>
@@ -26,7 +18,7 @@ export const App = () => {
         </li>
       </nav>
       <Routes>
-        <Route path="/" element={<div>Home</div>} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/movies" element={<div>Movies</div>} />
         <Route path="/movies/:movieId" element={<MovieDetails />}>
           <Route path="cast" element={<div>Cast</div>} />
