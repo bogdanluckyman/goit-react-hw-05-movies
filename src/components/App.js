@@ -13,9 +13,6 @@ export const App = () => {
         <li>
           <NavLink to="/movies">Movies</NavLink>
         </li>
-        <li>
-          <NavLink to="/movies/:movieId">MovieDetails</NavLink>
-        </li>
       </nav>
       <Routes>
         <Route path="/" element={<HomePage />} />

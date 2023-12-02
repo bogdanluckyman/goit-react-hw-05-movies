@@ -1,5 +1,6 @@
 import { fetchMovies } from 'components/Api';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export const HomePage = () => {
   const [movies, setMovies] = useState([]);
@@ -8,6 +9,7 @@ export const HomePage = () => {
     const fetchTopMovies = async () => {
       const topMovies = await fetchMovies();
       setMovies(topMovies.results);
+      console.log(topMovies.results);
     };
     fetchTopMovies();
   }, []);
@@ -18,7 +20,9 @@ export const HomePage = () => {
       <ul>
         {movies.map(item => (
           <li key={item.id}>
-            <p>{item.title}</p>
+            <Link to={`/movies/${item.id}`}>
+              <p>{item.title}</p>
+            </Link>
           </li>
         ))}
       </ul>
