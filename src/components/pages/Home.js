@@ -1,6 +1,6 @@
 import { fetchMovies } from 'components/Api';
+import { NameList } from 'components/MoviesList';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 export const HomePage = () => {
   const [movies, setMovies] = useState([]);
@@ -15,17 +15,5 @@ export const HomePage = () => {
   }, []);
 
   console.log(movies);
-  return (
-    <div>
-      <ul>
-        {movies.map(item => (
-          <li key={item.id}>
-            <Link to={`/movies/${item.id}`}>
-              <p>{item.title}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  return <NameList movie={movies} />;
 };
