@@ -2,14 +2,13 @@ import { fetchSearchMovies } from 'components/Api';
 import { NameList } from 'components/MoviesList';
 import { useState } from 'react';
 
-export const SearchMovie = () => {
+export default function SearchMovie() {
   const [searchValue, setSearchValue] = useState('');
   const [movieList, setMovieList] = useState([]);
 
   const foundMovie = async () => {
     if (searchValue.trim() !== '') {
       const movieList = await fetchSearchMovies(searchValue);
-      console.log(movieList.results);
       setMovieList(movieList.results);
     }
   };
@@ -29,4 +28,4 @@ export const SearchMovie = () => {
       <NameList movie={movieList} />
     </div>
   );
-};
+}

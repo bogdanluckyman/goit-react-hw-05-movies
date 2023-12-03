@@ -31,3 +31,25 @@ export const fetchSearchMovies = async name => {
     console.log(error);
   }
 };
+
+export const fetchMoviesCast = async id => {
+  try {
+    const response = await axios.get(
+      `/movie/${id}/credits?language=en-US&api_key=${API_KEY}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchMoviesReviews = async id => {
+  try {
+    const response = await axios.get(
+      `/movie/${id}/reviews?language=en-US&page=1&api_key=${API_KEY}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
