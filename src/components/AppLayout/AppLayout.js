@@ -1,24 +1,30 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { GlobalStyle } from '../GlobalStyles';
 import { Suspense } from 'react';
 import { ColorRing } from 'react-loader-spinner';
+import {
+  NavItem,
+  NavItemLink,
+  Navigation,
+  StyledMain,
+} from './AppLayout.styled';
 
 export const AppLayout = () => {
   return (
     <div>
       <header>
-        <nav>
-          <li>
-            <NavLink to="/">Home</NavLink>
-          </li>
+        <Navigation>
+          <NavItem>
+            <NavItemLink to="/">Home</NavItemLink>
+          </NavItem>
 
-          <li>
-            <NavLink to="/movies">Movies</NavLink>
-          </li>
-        </nav>
+          <NavItem>
+            <NavItemLink to="/movies">Movies</NavItemLink>
+          </NavItem>
+        </Navigation>
       </header>
 
-      <main>
+      <StyledMain>
         <Suspense
           fallback={
             <ColorRing
@@ -35,7 +41,7 @@ export const AppLayout = () => {
           <Outlet />
         </Suspense>
         <GlobalStyle />
-      </main>
+      </StyledMain>
     </div>
   );
 };

@@ -3,6 +3,13 @@ import Notiflix from 'notiflix';
 import { useState, useEffect } from 'react';
 import { ColorRing } from 'react-loader-spinner';
 import { useParams } from 'react-router-dom';
+import {
+  ActorName,
+  ActorPoster,
+  ActorsList,
+  ItemText,
+  ListItem,
+} from './Cast.styled';
 
 export default function MovieCast() {
   const [actorsList, setActorsList] = useState([]);
@@ -39,13 +46,13 @@ export default function MovieCast() {
           colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
         />
       )}
-      <ul>
+      <ActorsList>
         {actorsList.map(({ id, name, character, profile_path }) => (
-          <li key={id}>
-            <b>{name}</b>
-            <p>Character: {character}</p>
+          <ListItem key={id}>
+            <ActorName>{name}</ActorName>
+            <ItemText>Character: {character}</ItemText>
             {profile_path && (
-              <img
+              <ActorPoster
                 src={
                   profile_path
                     ? `https://image.tmdb.org/t/p/w200${profile_path}`
@@ -54,19 +61,9 @@ export default function MovieCast() {
                 alt={name}
               />
             )}
-          </li>
+          </ListItem>
         ))}
-      </ul>
+      </ActorsList>
     </div>
   );
 }
-// const defaultImg = 'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700'
-
-// <img src={
-//  movieData.poster_path ?
-//  https://image.tmdb.org/t/p/w500/${movieData.poster_path}
-//  : defaultImg
-// }
-// width={250}
-// alt="poster"
-// />

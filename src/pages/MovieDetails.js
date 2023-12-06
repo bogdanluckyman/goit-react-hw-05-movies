@@ -1,14 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
-import {
-  Link,
-  NavLink,
-  Outlet,
-  useParams,
-  useLocation,
-} from 'react-router-dom';
+import { Outlet, useParams, useLocation } from 'react-router-dom';
 import { fetchMoviesDetails } from 'Api';
 import { ColorRing } from 'react-loader-spinner';
 import Notiflix from 'notiflix';
+import { IoArrowBackCircleSharp } from 'react-icons/io5';
+import {
+  Back,
+  Box,
+  Container,
+  Genres,
+  GenresList,
+  GenresListItem,
+  HeroTitle,
+  Image,
+  LinkItem,
+  LinkList,
+  Overview,
+  OverviewText,
+  Score,
+  StyledLink,
+} from './MovieDetails/MovieDetails.styled';
 
 export default function MovieDetails() {
   const [details, setDetails] = useState({});
@@ -38,21 +49,24 @@ export default function MovieDetails() {
 
   return (
     <div>
-      {isLoading && (
-        <ColorRing
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="blocks-loading"
-          wrapperStyle={{}}
-          wrapperClass="blocks-wrapper"
-          colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
-        />
-      )}
-      <div>
-        <Link to={backLinkRef.current.state?.from || '/'}>Back</Link>
+      <Container>
+        <Back to={backLinkRef.current.state?.from || '/'}>
+          <IoArrowBackCircleSharp />
+        </Back>
+        {isLoading && (
+          <ColorRing
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="blocks-loading"
+            wrapperStyle={{}}
+            wrapperClass="blocks-wrapper"
+            colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+          />
+        )}
+
         {poster_path && (
-          <img
+          <Image
             src={
               poster_path
                 ? `https://image.tmdb.org/t/p/w300${poster_path}`
@@ -61,25 +75,29 @@ export default function MovieDetails() {
             alt={title}
           />
         )}
-      </div>
-      <div>
-        <h1>{title}</h1>
-        <p>User Score: {vote_average}%</p>
-        <h2>Overview</h2>
-        <p>{overview}</p>
-        <h3>Genres</h3>
-        <ul>
-          {genres && genres.map(genre => <li key={genre.id}>{genre.name}</li>)}
-        </ul>
-      </div>
-      <ul>
-        <li>
-          <NavLink to={`/movies/${movieId}/cast`}>Cast</NavLink>
-        </li>
-        <li>
-          <NavLink to={`/movies/${movieId}/reviews`}>Reviews</NavLink>
-        </li>
-      </ul>
+        <Box>
+          <HeroTitle>{title}</HeroTitle>
+          <Score>User Score: {vote_average}%</Score>
+          <Overview>Overview</Overview>
+          <OverviewText>{overview}</OverviewText>
+          <Genres>Genres</Genres>
+          <GenresList>
+            {genres &&
+              genres.map(genre => (
+                <GenresListItem key={genre.id}>{genre.name}</GenresListItem>
+              ))}
+          </GenresList>
+
+          <LinkList>
+            <LinkItem>
+              <StyledLink to={`/movies/${movieId}/cast`}>Cast</StyledLink>
+            </LinkItem>
+            <LinkItem>
+              <StyledLink to={`/movies/${movieId}/reviews`}>Reviews</StyledLink>
+            </LinkItem>
+          </LinkList>
+        </Box>
+      </Container>
       <Outlet />
     </div>
   );

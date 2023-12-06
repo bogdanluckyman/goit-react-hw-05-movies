@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { fetchSearchMovies } from 'Api';
-import { NameList } from 'components/MoviesList';
+import { NameList } from 'components/MoviesList/MoviesList';
 import { ColorRing } from 'react-loader-spinner';
 import Notiflix from 'notiflix';
+import { Container, StyledBtn, StyledInput } from './Movies/Movies.styled';
 
 export default function SearchMovie() {
   const [searchValue, setSearchValue] = useState('');
@@ -47,6 +48,9 @@ export default function SearchMovie() {
 
         foundMovie();
         setIsSearching(false);
+      } else if (isSearching) {
+        Notiflix.Notify.warning('Please enter a movie title.');
+        setIsLoading(false);
       }
     } catch (error) {
       Notiflix.Notify.failure(`${error}`);
@@ -68,11 +72,13 @@ export default function SearchMovie() {
     if (searchValue.trim() !== '') {
       setIsSearching(true);
       navigate(`/movies`, { state: { query: searchValue } });
+    } else {
+      Notiflix.Notify.warning('Please enter a movie title.');
     }
   };
 
   return (
-    <div>
+    <Container>
       {isLoading && (
         <ColorRing
           visible={true}
@@ -84,14 +90,14 @@ export default function SearchMovie() {
           colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
         />
       )}
-      <input
+      <StyledInput
         type="text"
         placeholder="Enter the movie title"
         value={searchValue}
         onChange={handleInputChange}
       />
-      <button onClick={handleSearchClick}>Search</button>
+      <StyledBtn onClick={handleSearchClick}>Search</StyledBtn>
       <NameList movie={movieList} />
-    </div>
+    </Container>
   );
 }
