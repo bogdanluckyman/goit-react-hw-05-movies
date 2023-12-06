@@ -1,37 +1,59 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
-import { fetchSearchMovies } from 'components/Api';
+import { fetchSearchMovies } from 'Api';
 import { NameList } from 'components/MoviesList';
+import { ColorRing } from 'react-loader-spinner';
+import Notiflix from 'notiflix';
 
 export default function SearchMovie() {
   const [searchValue, setSearchValue] = useState('');
   const [movieList, setMovieList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isSearching, setIsSearching] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const queryParam = searchParams.get('query') || '';
 
   useEffect(() => {
-    setSearchValue(queryParam);
+    try {
+      setIsLoading(true);
+      setSearchValue(queryParam);
+    } catch (error) {
+      Notiflix.Notify.failure(`${error}`);
+    } finally {
+      setIsLoading(false);
+    }
   }, [queryParam]);
 
-  const foundMovie = useCallback(async () => {
-    if (searchValue.trim() !== '') {
-      const movies = await fetchSearchMovies(searchValue);
-      setMovieList(movies.results);
-      searchParams.set('query', searchValue);
-      setSearchParams(searchParams);
-    }
-  }, [searchValue, searchParams, setSearchParams]);
-
   useEffect(() => {
-    if (isSearching) {
-      foundMovie();
-      setIsSearching(false);
+    try {
+      setIsLoading(true);
+
+      if (isSearching && searchValue.trim() !== '') {
+        const foundMovie = async () => {
+          try {
+            const movies = await fetchSearchMovies(searchValue);
+            setMovieList(movies.results);
+            searchParams.set('query', searchValue);
+            setSearchParams(searchParams);
+          } catch (error) {
+            Notiflix.Notify.failure(`${error}`);
+          } finally {
+            setIsLoading(false);
+          }
+        };
+
+        foundMovie();
+        setIsSearching(false);
+      }
+    } catch (error) {
+      Notiflix.Notify.failure(`${error}`);
+    } finally {
+      setIsLoading(false);
     }
-  }, [foundMovie, isSearching]);
+  }, [searchValue, isSearching, searchParams, setSearchParams]);
 
   useEffect(() => {
     if (location.state?.query && location.state.query !== searchValue) {
@@ -51,6 +73,17 @@ export default function SearchMovie() {
 
   return (
     <div>
+      {isLoading && (
+        <ColorRing
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{}}
+          wrapperClass="blocks-wrapper"
+          colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+        />
+      )}
       <input
         type="text"
         placeholder="Enter the movie title"
