@@ -1,24 +1,22 @@
-import { fetchMoviesDetails } from 'components/Api';
-import { useRef, useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Link,
   NavLink,
   Outlet,
-  useLocation,
   useParams,
+  useLocation,
 } from 'react-router-dom';
+import { fetchMoviesDetails } from 'components/Api';
 
 export default function MovieDetails() {
   const [details, setDetails] = useState({});
   const { movieId } = useParams();
   const location = useLocation();
-  const backLinkRef = useRef(location);
 
   useEffect(() => {
     const fetchDetails = async () => {
-      const detailsResponce = await fetchMoviesDetails(movieId);
-      setDetails(detailsResponce);
+      const detailsResponse = await fetchMoviesDetails(movieId);
+      setDetails(detailsResponse);
     };
     fetchDetails();
   }, [movieId]);
@@ -28,7 +26,7 @@ export default function MovieDetails() {
   return (
     <div>
       <div>
-        <Link to={backLinkRef.current?.from ?? '/'}>Back</Link>
+        <Link to={location.state?.from || '/'}>Back</Link>
         {poster_path && (
           <img
             src={`https://image.tmdb.org/t/p/w300${poster_path}`}
@@ -48,10 +46,10 @@ export default function MovieDetails() {
       </div>
       <ul>
         <li>
-          <NavLink to="cast">Cast</NavLink>
+          <NavLink to={`/movies/${movieId}/cast`}>Cast</NavLink>
         </li>
         <li>
-          <NavLink to="reviews">Reviews</NavLink>
+          <NavLink to={`/movies/${movieId}/reviews`}>Reviews</NavLink>
         </li>
       </ul>
       <Outlet />
