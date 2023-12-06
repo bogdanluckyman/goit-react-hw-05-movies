@@ -21,9 +21,8 @@ export const AppLayout = () => {
         <Suspense fallback={<div>Loading page...</div>}>
           <Outlet />
         </Suspense>
+        <GlobalStyle />
       </main>
-
-      <GlobalStyle />
     </div>
   );
 };
