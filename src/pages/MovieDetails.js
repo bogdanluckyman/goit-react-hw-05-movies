@@ -65,7 +65,7 @@ export default function MovieDetails() {
           />
         )}
 
-        {poster_path && (
+        {
           <Image
             src={
               poster_path
@@ -74,7 +74,7 @@ export default function MovieDetails() {
             }
             alt={title}
           />
-        )}
+        }
         <Box>
           <HeroTitle>{title}</HeroTitle>
           <Score>User Score: {vote_average}%</Score>

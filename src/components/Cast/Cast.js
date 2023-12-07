@@ -51,7 +51,7 @@ export default function MovieCast() {
           <ListItem key={id}>
             <ActorName>{name}</ActorName>
             <ItemText>Character: {character}</ItemText>
-            {profile_path && (
+            {
               <ActorPoster
                 src={
                   profile_path
@@ -60,7 +60,7 @@ export default function MovieCast() {
                 }
                 alt={name}
               />
-            )}
+            }
           </ListItem>
         ))}
       </ActorsList>

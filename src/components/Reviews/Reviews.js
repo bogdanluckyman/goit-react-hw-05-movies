@@ -5,14 +5,12 @@ import { useState } from 'react';
 import { ColorRing } from 'react-loader-spinner';
 import { useParams } from 'react-router-dom';
 import { AuthorName, ItemText, ListItem, ReviewList } from './Reviews.styled';
-import { Image } from 'pages/MovieDetails/MovieDetails.styled';
 
 export default function MoviesReviews() {
   const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const defaultImg =
-    'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
+
   useEffect(() => {
     const getReviews = async () => {
       try {
@@ -52,7 +50,7 @@ export default function MoviesReviews() {
           ))}
         </ReviewList>
       ) : (
-        <Image src={defaultImg} alt="defoult" />
+        <ItemText>We dont found reviews </ItemText>
       )}
     </div>
   );
